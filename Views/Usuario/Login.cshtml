@@ -1,0 +1,25 @@
+﻿@model MePague.Models.Usuario
+@{
+    ViewBag.Title = "Login";
+}
+
+@using (Html.BeginForm("Login", "Usuario", FormMethod.Post, new { @class = "form-horizontal", enctype = "multipart/form-data" }))
+{
+    <fieldset>
+        <form>
+            <h3 style="text-align:center;">
+                Entrar
+            </h3>
+            <div style="text-align: center;">
+                @Html.TextBoxFor(model => model.nome, null, new { @class = "form-control-login text-center", placeholder = "Usuário" })
+            </div>
+            <div style="text-align: center;">
+                @Html.PasswordFor(model => model.senha, new { @class = "form-control-login text-center", placeholder = "Senha" })
+            </div>
+            <div class="text-center form-group">
+                @Html.ActionLink("Cadastrar", "AddNew", "Usuario", null, new { @class = "btn btn-default" })
+                <input type="submit" value="Entrar" class="btn btn-primary" />
+            </div>
+        </form>
+    </fieldset>
+}

@@ -1,0 +1,32 @@
+﻿@using MePague.Models;
+@model MePague.Models.Despesa
+@{
+    ViewBag.Title = "Nova despesa";
+    Despesa d = new Despesa();
+    IEnumerable<SelectListItem> tipos = ViewBag.Tipos;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Despesa</h2>
+
+@using (Html.BeginForm("Add", "Despesa", FormMethod.Post))
+{
+<fieldset class="no-border form-group">
+    <div id="Nome" class="form">
+        @Html.LabelFor(model => model.nome, null, new { @class = "col-sm-5" })
+        @Html.TextBoxFor(model => model.nome, new { @class = "form-control col-sm-5" })
+        @Html.ValidationMessageFor(model => model.nome, null, new { @class = "text-danger" })
+    </div>
+    <div id="Valor" class="form">
+        @Html.LabelFor(model => model.valor, null, new { @class = "col-sm-5" })
+        @Html.TextBoxFor(model => model.valor, new { @class = "form-control col-sm-5" })
+        @Html.ValidationMessageFor(model => model.valor, null, new { @class = "text-danger" })
+    </div>
+    <div id="Tipo" class="form">
+        @Html.LabelFor(model => model.tipo, null, new { @class = "col-sm-5" })
+        @Html.DropDownListFor(model => model.tipo, tipos, new { @class = "form-control col-sm-5" })
+        @Html.ValidationMessageFor(model => model.tipo, null, new { @class = "text-danger" })
+    </div>
+    <div class="col-sm-5"><input type="submit" value="Salvar" class="btn btn-primary"/></div>
+</fieldset>
+}

@@ -1,0 +1,23 @@
+﻿@model MePague.Models.Cliente
+@{
+    ViewBag.Title = "Add";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using (Html.BeginForm("Add", "Cliente", FormMethod.Post))
+{
+<fieldset>
+    <legend>Adicionar cliente</legend>
+        <div>
+            @Html.LabelFor(Model => Model.nome, new { @class="col-sm-5" })
+            @Html.TextBoxFor(Model => Model.nome, new { @class = "form-control col-sm-5" })
+        </div>
+        <div>
+            @Html.LabelFor(Model => Model.email, new { @class = "col-sm-5" })
+            @Html.TextBoxFor(Model => Model.email, new { @class = "form-control col-sm-5" })
+        </div>
+        <div class="col-sm-5">
+            <input type="submit" value="Enviar" class="btn btn-primary" />
+        </div>
+</fieldset>
+}

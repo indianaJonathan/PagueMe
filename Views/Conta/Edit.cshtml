@@ -1,0 +1,23 @@
+﻿@model MePague.Models.Usuario
+@{
+    ViewBag.Title = "Editar conta";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Editar conta</h2>
+
+@using (Html.BeginForm("Edit", "Usuario", FormMethod.Post))
+{
+<div>
+    @Html.HiddenFor(model => model.id)
+    <div>@Html.LabelFor(model => model.cliente.nome)</div>
+    <div>@Html.TextBoxFor(model => model.cliente.nome)</div>
+    <div>@Html.LabelFor(model => model.cliente.email)</div>
+    <div>@Html.TextBoxFor(model => model.cliente.email)</div>
+    <div>@Html.LabelFor(model => model.nome)</div>
+    <div>@Html.TextBoxFor(model => model.nome)</div>
+    <div>@Html.LabelFor(model => model.senha)</div>
+    <div>@Html.PasswordFor(model => model.senha)</div>
+    <div><input type="submit" value="Salvar"/></div>
+</div>
+}

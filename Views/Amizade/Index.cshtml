@@ -1,0 +1,59 @@
+﻿@using MePague.Models;
+@{
+    ViewBag.Title = "Amizades";
+    List<Amizade> amizadesSolicitadas = ViewBag.AmizadesSolicitadas;
+    List<Amizade> amizadesAceitas = ViewBag.AmizadesAceitas;
+    List<Amizade> amizadesPendentes = ViewBag.AmizadesPendentes;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@Html.ActionLink("Adicionar amigo", "Add", "Amizade", null, new { @class = "btn btn-primary", style="margin-top: 5px;" })
+
+@if (amizadesPendentes.Count > 0)
+{
+<h3>Solicitações pendentes</h3>
+<table width="100%">
+    <tr>
+        <th width="70%">Solicitante</th>
+        <th width="30%">Ação</th>
+    </tr>
+    @foreach (Amizade a in amizadesPendentes)
+    {
+    <tr>
+        <td>@a.solicitante.nome</td>
+        <td>@Html.ActionLink("Aceitar", "aceitarAmizade", "Amizade", new { id = a.id }, new { @class = "btn btn-success" }) @Html.ActionLink("Recusar", "recusarAmizade", "Amizade", new { id = a.id }, new { @class = "btn btn-danger" })</td>
+    </tr>
+    }
+</table>
+}
+
+@if (amizadesAceitas.Count > 0 || amizadesSolicitadas.Count > 0)
+{
+<h3>Amizades</h3>
+<table width="100%">
+    <tr>
+        <th width="50%">Amigo</th>
+        <th width="30%">Status</th>
+        <th width="10%">Ação</th>
+    </tr>
+    @foreach (Amizade a in amizadesSolicitadas)
+    {
+        <tr>
+            <td>@a.solicitado.nome</td>
+            <td>@a.status</td>
+            <td>@Html.ActionLink("Desfazer amizade", "desfazerAmizade", "Amizade", new { id = a.id }, new { @class = "btn btn-warning" })</td>
+        </tr>
+    }
+    @foreach (Amizade a in amizadesAceitas)
+    {
+        if (a.status.Equals(MePague.Utils.StatusSolicitacao.Aceito))
+        {
+            <tr>
+                <td>@a.solicitante.nome</td>
+                <td>@a.status</td>
+                <td>@Html.ActionLink("Desfazer amizade", "desfazerAmizade", "Amizade", new{ id = a.id }, new { @class="btn btn-warning" })</td>
+            </tr>
+        }
+    }
+</table>
+}

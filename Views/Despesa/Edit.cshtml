@@ -1,0 +1,125 @@
+﻿@using MePague.Models;
+@model MePague.Models.Despesa
+@{
+    ViewBag.Title = "Editar";
+    IEnumerable<SelectListItem> tipos = ViewBag.Tipos;
+    bool canAdd = ViewBag.CanAdd;
+    List<Amizade> amigosSolicitados = ViewBag.AmigosSolicitados;
+    List<Amizade> amigosAceitos = ViewBag.AmigosAceitos;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Despesa</h2>
+
+@using (Html.BeginForm("Edit", "Despesa", FormMethod.Post))
+{
+<fieldset>
+    <legend>Editar</legend>
+    @Html.HiddenFor(model => model.dono.id)
+    @Html.HiddenFor(model => model.dono.nome)
+    @Html.HiddenFor(model => model.dono.email)
+    @Html.HiddenFor(model => model.status)
+    <div id="Nome" class="form-group" style="height: 30px;">
+        <div class="col-sm-5">@Html.LabelFor(model => model.nome)</div>
+        <div class="col-sm-5">@Html.TextBoxFor(model => model.nome, new { @class = "form-control" })</div>
+        @Html.ValidationMessageFor(model => model.nome, null, new { @class = "text-danger" })
+    </div>
+    <div id="Valor" class="form-group" style="height: 30px;">
+        <div class="col-sm-5">@Html.LabelFor(model => model.valor)</div>
+        <div class="col-sm-5">@Html.TextBoxFor(model => model.valor, new { @class = "form-control" })</div>
+        @Html.ValidationMessageFor(model => model.valor, null, new { @class = "text-danger" })
+    </div>
+    <div id="ValorRestante" class="form-group" style="height: 30px;">
+        <div class="col-sm-5"><b>Valor restante</b></div>
+        <div class="col-sm-5">@ViewBag.ValorRestante.ToString("C2")</div>
+    </div>
+    <div id="Tipo" class="form-group" style="height: 30px;">
+        <div class="col-sm-5">@Html.LabelFor(model => model.tipo)</div>
+        <div class="col-sm-5">@Html.DropDownListFor(model => model.tipo, tipos, null, new { @class = "form-control" })</div>
+    </div>
+    <div id="TituloDependentes" class="form-group">
+        <div class="col-sm-10"><h3>Dependentes</h3></div>
+    </div>
+    @if (Model.dependentes != null)
+    {
+        <table width="100%">
+            <tr>
+                <th>Nome</th>
+                <th>Status</th>
+                <th>Valor</th>
+                <th>Ação</th>
+                <th></th>
+            </tr>
+            @for (int i = 0; i < Model.dependentes.Count; i++)
+            {
+        <tr>
+            <td width="25%">@Model.dependentes[i].dependente.nome</td>
+            <td width="25%">@Model.dependentes[i].status</td>
+            <td width="25%">@Html.TextBoxFor(model => model.dependentes[i].valor, new { @class = "form-control" })</td>
+            <td width="25%">
+                @Html.ActionLink("Remover", "removeDependente", "Despesa", new { idDependente = Model.dependentes[i].id, idDespesa = Model.id }, new { @class = "btn btn-warning" })
+            @if ("Saída solicitada".Equals(@Model.dependentes[i].status))
+            {
+                @Html.ActionLink("Aceitar", "aceitarSaida", "Despesa", new { idDependente = Model.dependentes[i].id, idDespesa = Model.id }, new { @class = "btn btn-success" }) 
+                @Html.ActionLink("Recusar", "recusarSaida", "Despesa", new { idDependente = Model.dependentes[i].id, idDespesa = Model.id }, new { @class = "btn btn-danger" })
+            }
+            </td>
+        </tr>
+            }
+        </table>
+    }
+    @if (canAdd)
+    {
+        <div class="col-sm-10"><h3>Adicionar dependentes</h3></div>
+        <table class="table-striped" width="100%">
+            <tr>
+                <th width="45%">Nome</th>
+                <th width="45%">Usuário</th>
+                <th width="10%">Ação</th>
+            </tr>
+            @foreach (Amizade a in amigosSolicitados)
+            {
+                bool isInBill = false;
+                foreach (Dependente d in Model.dependentes)
+                {
+                    if (a.solicitado.id == d.dependente.id)
+                    {
+                        isInBill = true;
+                    }
+                }
+                if (!isInBill)
+                {
+                    <tr>
+                        <td>@a.solicitado.nome</td>
+                        <td>@MePague.DAO.UsuarioDAO.searchUsuarioPorCliente(a.solicitado.id).nome</td>
+                        <td>@Html.ActionLink("Adicionar", "adicionarDependente", "Despesa", new { idDependente = a.solicitado.id, idDespesa = Model.id }, new { @class="btn btn-jou" })</td>
+                    </tr>
+                }
+            }
+            @foreach (Amizade a in amigosAceitos)
+            {
+                bool isInBill = false;
+                foreach (Dependente d in Model.dependentes)
+                {
+                    if (a.solicitante.id == d.dependente.id)
+                    {
+                        isInBill = true;
+                    }
+                }
+                if (!isInBill)
+                {
+                    <tr>
+                        <td>@a.solicitante.nome</td>
+                        <td>@MePague.DAO.UsuarioDAO.searchUsuarioPorCliente(a.solicitante.id).nome</td>
+                        <td>@Html.ActionLink("Adicionar", "adicionarDependente", "Despesa", new { idDependente = a.solicitante.id, idDespesa = Model.id, @class = "btn-danger" }, null)</td>
+                    </tr>
+                }
+            }
+        </table>
+    }
+    <div>
+        <div width="30%"></div>
+        <div width="70%"><input type="submit" value="Salvar" class="btn btn-primary" /></div>
+    </div>
+</fieldset>
+}

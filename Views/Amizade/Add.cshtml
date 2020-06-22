@@ -1,0 +1,21 @@
+﻿@using MePague.Models;
+@model MePague.Models.Amizade
+@{
+    ViewBag.Title = "Adicionar amigo";
+    IEnumerable<SelectListItem> clientes = ViewBag.Clientes;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using (Html.BeginForm("Add", "Amizade", FormMethod.Post))
+{
+<fieldset>
+    <legend>Adicionar amigo</legend>
+    <div>
+        @Html.LabelFor(model => model.solicitado.nome, new { @class = "col-sm-5" })
+        @Html.DropDownListFor(model => model.solicitado.id, clientes, new { @class = "form-control col-sm-5" })
+    </div>
+    <div class="col-sm-5">
+        <input type="submit" value="Enviar solicitação" class="btn btn-primary" />
+    </div>
+</fieldset>
+}

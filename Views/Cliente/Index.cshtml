@@ -1,0 +1,31 @@
+﻿@using MePague.Models;
+@{
+    ViewBag.Title = "Index";
+    List<Cliente> clientes = ViewBag.Clientes;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Clientes</h2>
+
+@Html.ActionLink("Novo cliente", "Add", "Cliente", new { @class = "btn btn-primary", @style="margin-bottom: 5px;" })
+
+@if (clientes != null)
+{
+<table width="100%">
+    <tr>
+        <th width="40%">Nome</th>
+        <th width="45%">E-mail</th>
+        <th width="15%">Ação</th>
+    </tr>
+
+
+    @foreach (Cliente cliente in clientes)
+    {
+        <tr>
+            <td>@cliente.nome</td>
+            <td>@cliente.email</td>
+            <td>@Html.ActionLink("Editar", "Edit", "Cliente", new { id = cliente.id }, new { @class="btn btn-warning" }) @Html.ActionLink("Deletar", "Delete", "Cliente", new { id = cliente.id }, new { @class="btn btn-danger" })</td>
+        </tr>
+    }
+</table>
+}

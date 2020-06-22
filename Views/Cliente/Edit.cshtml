@@ -1,0 +1,25 @@
+﻿@using MePague.Models;
+@model Cliente
+@{
+    ViewBag.Title = "Editar cliente";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using (Html.BeginForm("Edit", "Cliente", FormMethod.Post))
+{
+    <fieldset>
+        <legend>Editar cliente</legend>
+        @Html.HiddenFor(model => model.id)
+        <div>
+            @Html.LabelFor(model => model.nome, new { @class="col-sm-5" })
+            @Html.TextBoxFor(model => model.nome, new { @class = "form-control col-sm-5" })
+        </div>
+        <div>
+            @Html.LabelFor(model => model.email, new { @class = "col-sm-5" })
+            @Html.TextBoxFor(model => model.email, new { @class = "form-control col-sm-5" })
+        </div>
+        <div class = "col-sm-5">
+            <input type="submit" value="Salvar" class="btn btn-primary" />
+        </div>
+    </fieldset>
+}

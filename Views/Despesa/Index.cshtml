@@ -1,0 +1,83 @@
+﻿@using MePague.Models;
+@{
+    ViewBag.Title = "Despesas";
+    List<Despesa> despesas = ViewBag.Despesas;
+    List<Despesa> dependencias = ViewBag.Dependencias;
+    List<Despesa> solicitacao = ViewBag.DependenciaSolicitada;
+    Dependente d = new Dependente();
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Despesas</h2>
+
+@Html.ActionLink("Nova despesa", "Add", "Despesa", null, new { @class = "btn btn-primary", @style="margin-bottom: 5px;" })
+
+<table width="100%">
+    <tr>
+        <th>Dono</th>
+        <th>Despesa</th>
+        <th>Valor</th>
+        <th>Valor à pagar</th>
+        <th>Dependentes</th>
+        <th>Status</th>
+        <th>Ação</th>
+    </tr>
+    @foreach (Despesa desp in solicitacao)
+    {
+        foreach (Dependente dep in desp.dependentes)
+        {
+            Usuario u = MePague.DAO.UsuarioDAO.searchUsuarioPorNome(MePague.Utils.Sessao.RetornarUsuario());
+            if (dep.dependente.id == u.cliente.id)
+            {
+                d = dep;
+            }
+        }
+        <tr>
+            <td>@desp.dono.nome</td>
+            <td>@desp.nome</td>
+            <td>@desp.valor.ToString("C2")</td>
+            <td>@d.valor.ToString("C2")</td>
+            <td>@desp.dependentes.Count</td>
+            <td>@desp.status</td>
+            <td>@Html.ActionLink("Aceitar", "aceitarParticipacao", "Despesa", new { idDependente = d.dependente.id, idDespesa = desp.id }, new { @class="btn btn-success" }) @Html.ActionLink("Recusar", "recusarParticipacao", "Despesa", new { idDependente = d.dependente.id, idDespesa = desp.id }, new { @class="btn btn-danger" })</td>
+        </tr>
+    }
+    @foreach (Despesa desp in despesas)
+    {
+        double valorRestante = desp.valor;
+        d = new Dependente();
+        foreach (Dependente dep in desp.dependentes)
+        {
+            valorRestante -= dep.valor;
+        }
+        <tr>
+            <td>@desp.dono.nome</td>
+            <td>@desp.nome</td>
+            <td>@desp.valor.ToString("C2")</td>
+            <td>@valorRestante.ToString("C2")</td>
+            <td>@desp.dependentes.Count</td>
+            <td>@desp.status</td>
+            <td>@Html.ActionLink("Editar", "Edit", "Despesa", new { id = desp.id }, new { @class="btn btn-warning" }) @Html.ActionLink("Deletar", "deleteDespesa", "Despesa", new { id = desp.id }, new { @class = "btn btn-danger" })</td>
+        </tr>
+    }
+    @foreach (Despesa desp in dependencias)
+    {
+        foreach (Dependente dep in desp.dependentes)
+        {
+            Usuario u = MePague.DAO.UsuarioDAO.searchUsuarioPorNome(MePague.Utils.Sessao.RetornarUsuario());
+            if (dep.dependente.id == u.cliente.id)
+            {
+                d = dep;
+            }
+        }
+        <tr>
+            <td>@desp.dono.nome</td>
+            <td>@desp.nome</td>
+            <td>@desp.valor.ToString("C2")</td>
+            <td>@d.valor.ToString("C2")</td>
+            <td>@desp.dependentes.Count</td>
+            <td>@desp.status</td>
+            <td>@Html.ActionLink("Solicitar saída", "solicitarSaida", "Despesa", new { idDependente = d.id }, new { @class="btn btn-warning" })</td>
+        </tr>
+    }
+</table>

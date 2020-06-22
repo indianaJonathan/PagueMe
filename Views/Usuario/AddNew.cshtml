@@ -1,0 +1,32 @@
+﻿@using MePague.Models
+@model MePague.Models.Usuario
+@{
+    ViewBag.Title = "Criar usuário";
+    SelectList status = ViewBag.Status;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Criar usuário</h2>
+
+@using (Html.BeginForm("AddNew", "Usuario", FormMethod.Post))
+{
+    <div>
+        <div>
+            @Html.LabelFor(model => model.cliente.nome, new { @class="col-sm-5" })
+            @Html.TextBoxFor(model => model.cliente.nome, new { @class="form-control col-sm-5" })
+        </div>
+        <div>
+            @Html.LabelFor(model => model.cliente.email, new { @class = "col-sm-5" })
+            @Html.TextBoxFor(model => model.cliente.email, new { @class = "form-control col-sm-5" })
+        </div>
+        <div>
+            @Html.LabelFor(model => model.nome, new { @class = "col-sm-5" })
+            @Html.TextBoxFor(model => model.nome, new { @class = "form-control col-sm-5" })
+        </div>
+        <div>
+            @Html.LabelFor(model => model.senha, new { @class = "col-sm-5" })
+            @Html.PasswordFor(model => model.senha, new { @class = "form-control col-sm-5" })
+        </div>
+        <div class = "col-sm-5"><input type="submit" value="Criar" class="btn btn-primary"/></div>
+    </div>
+}

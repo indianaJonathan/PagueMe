@@ -1,0 +1,35 @@
+﻿@model MePague.Models.Usuario
+@{
+    ViewBag.Title = "Editar usuário";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Editar usuário</h2>
+
+@using (Html.BeginForm("Edit", "Usuario", FormMethod.Post))
+{ 
+<fieldset>
+    <div>
+        @Html.HiddenFor(model => model.cliente.id)
+        @Html.HiddenFor(model => model.id)
+        @Html.HiddenFor(model => model.tipo)
+        <div>
+            @Html.LabelFor(model => model.nome, new { @class = "col-sm-5" })
+            @Html.TextBoxFor(model => model.nome, null, new { @class = "form-control col-sm-5" })
+        </div>
+        <div>
+            @Html.LabelFor(model => model.cliente.nome, new { @class = "col-sm-5" })
+            @Html.TextBoxFor(model => model.cliente.nome, new { @class = "form-control col-sm-5" })
+        </div>
+        <div>
+            @Html.LabelFor(model => model.cliente.email, new { @class = "col-sm-5" })
+            @Html.TextBoxFor(model => model.cliente.email, new { @class = "form-control col-sm-5" })
+        </div>
+        <div>
+            @Html.LabelFor(model => model.senha, new { @class = "col-sm-5" })
+            @Html.PasswordFor(model => model.senha, new { @class = "form-control col-sm-5" })
+        </div>
+        <div class="col-sm-5"><input type="submit" value="Salvar" class="btn btn-primary" /></div>
+    </div>
+</fieldset>
+}

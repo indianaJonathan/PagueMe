@@ -1,0 +1,32 @@
+﻿@using MePague.Models;
+@model MePague.Models.Dependente
+@{
+    ViewBag.Title = "Adicionar dependente";
+    Despesa despesa = ViewBag.Despesa;
+    IEnumerable<SelectListItem> dependentes = ViewBag.Dependentes;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Adicionar dependente</h2>
+
+@using (Html.BeginForm("AddDependent", "Despesa", FormMethod.Post))
+{
+    <div width="100%">
+        <div>
+            <div width="30%"><b>Despesa</b></div>
+            <div width="70%">@despesa.nome</div>
+        </div>
+        <div>
+            <div width="30%"><b>Dependente</b></div>
+            <div width="70%">@Html.DropDownListFor(model => model.idDependente, dependentes, "Dependente", new { @class="form-control" })</div>
+        </div>
+        <div>
+            <div>@Html.LabelFor(model => model.valor)</div>
+            <div>@Html.TextBoxFor(model => model.valor, new { @class="form-control" })</div>
+        </div>
+        <div>
+            <div width="30%"></div>
+            <div width="70%"><input type="submit" value="Adicionar"/></div>
+        </div>
+    </div>
+}
